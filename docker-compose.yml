@@ -1,0 +1,77 @@
+
+services:
+  # Laravel Application (Commented out for local development)
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: landingcms-app
+  #   restart: unless-stopped
+  #   working_dir: /var/www/html
+  #   volumes:
+  #     - ./:/var/www/html
+  #     - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+  #   ports:
+  #     - "8000:8000"
+  #   networks:
+  #     - landingcms-network
+  #   depends_on:
+  #     - db
+  #   command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # Nginx Web Server (Commented out for development)
+  # webserver:
+  #   image: nginx:alpine
+  #   container_name: landingcms-webserver
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8000:80"
+  #   volumes:
+  #     - ./:/var/www/html
+  #     - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+  #   networks:
+  #     - landingcms-network
+  #   depends_on:
+  #     - app
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: landingcms-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "root_secret_password"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - landingcms-network
+    command: --default-authentication-plugin=mysql_native_password
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: landingcms-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "8081:80"
+    networks:
+      - landingcms-network
+    depends_on:
+      - db
+
+networks:
+  landingcms-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
