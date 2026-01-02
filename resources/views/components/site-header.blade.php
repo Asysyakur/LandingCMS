@@ -83,12 +83,12 @@
                             </div>
 
                             {{-- Sign Up --}}
-                            <a href="#" class="th-btn style4 ms-3">
+                            <a href="{{ route('register') }}" class="th-btn style4 ms-3">
                                 Sign Up
                             </a>
 
                             {{-- Log In --}}
-                            <a href="#" class="th-btn ms-2">
+                            <a href={{ route('login') }} class="th-btn ms-2">
                                 Log In <i class="fas fa-arrow-right ms-1"></i>
                             </a>
 

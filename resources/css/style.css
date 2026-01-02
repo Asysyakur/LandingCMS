@@ -115,8 +115,8 @@ Version: 1.0.0
   --yellow-color: #FACC15;
 
   /* ===== TYPOGRAPHY ===== */
-  --title-font: 'Barlow', sans-serif;
-  --body-font: 'Roboto', sans-serif;
+  --title-font: 'Inter', sans-serif;
+  --body-font: 'Inter', sans-serif;
   --icon-font: "Font Awesome 6 Pro";
 
   /* ===== LAYOUT ===== */

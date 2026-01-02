@@ -89,81 +89,11 @@
 
             <!-- CTA -->
             <div class="text-center mt-50">
-                <a href="#" class="th-btn cms-feature-cta">
+                <a href="{{ route('register') }}" class="th-btn cms-feature-cta">
                     Get Started <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
 
         </div>
     </section>
-
-    @push('scripts')
-        <script>
-            var map = L.map('map').setView([-2.5489, 118.0149], 4);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 14,
-                minZoom: 3
-            }).addTo(map);
-
-            const locations = [{
-                    city: "Banda Aceh",
-                    coords: [5.5560, 95.3222]
-                },
-                {
-                    city: "Medan",
-                    coords: [3.5952, 98.6722]
-                },
-                {
-                    city: "Palembang",
-                    coords: [-2.9761, 104.7754]
-                },
-                {
-                    city: "Banten",
-                    coords: [-6.4230, 106.1205]
-                },
-                {
-                    city: "DKI Jakarta",
-                    coords: [-6.2088, 106.8456]
-                },
-                {
-                    city: "Bandung",
-                    coords: [-6.9175, 107.6191]
-                },
-                {
-                    city: "Semarang",
-                    coords: [-6.9667, 110.4281]
-                },
-                {
-                    city: "Solo",
-                    coords: [-7.5561, 110.8318]
-                },
-                {
-                    city: "Mataram",
-                    coords: [-8.5833, 116.1167]
-                },
-                {
-                    city: "Kupang",
-                    coords: [-10.1771, 123.6070]
-                },
-                {
-                    city: "Makassar",
-                    coords: [-5.1477, 119.4238]
-                },
-                {
-                    city: "Palu",
-                    coords: [-0.8988, 119.8708]
-                },
-                {
-                    city: "Gorontalo",
-                    coords: [0.5403, 123.0626]
-                }
-            ];
-
-            locations.forEach(location => {
-                L.marker(location.coords)
-                    .addTo(map)
-            });
-        </script>
-    @endpush
 </x-layout>

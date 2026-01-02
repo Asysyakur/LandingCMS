@@ -39,6 +39,11 @@ class AuthController extends Controller
         return back()->withErrors(['username' => 'Username atau password salah.']);
     }
 
+    public function showRegister()
+    {
+        return view('admin.auth.register');
+    }
+
     public function logout(Request $request)
     {
         $request->session()->forget(['login', 'nama']);
