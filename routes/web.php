@@ -35,6 +35,8 @@ Route::middleware(['loginrequired'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
 });
 
 Route::middleware(['loginrequired'])->prefix('admin/news')->name('admin.news.')->group(function() {
