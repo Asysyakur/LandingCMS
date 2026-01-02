@@ -67,7 +67,47 @@ npm run build
 php artisan serve
 ```
 
-## 📁 Project Structure
+## � Docker Development Setup
+
+This project includes a Docker configuration for easy development setup with MySQL and phpMyAdmin.
+
+### 1. Prerequisites
+- Docker & Docker Compose installed
+
+### 2. Setup Environment
+Ensure your `.env` file has the following database configuration:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_compro
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+```
+
+### 3. Start Database Services
+Run the following command to start MySQL and phpMyAdmin containers:
+
+```bash
+docker compose up -d
+```
+
+### 4. Application Access
+- **Laravel App**: Run locally with `php artisan serve` (http://127.0.0.1:8000)
+- **phpMyAdmin**: http://localhost:8081
+  - Username: `laravel`
+  - Password: `secret`
+
+### 5. Troubleshooting
+If you encounter permission issues connecting to the database, try resetting the volume:
+
+```bash
+docker compose down -v
+docker compose up -d
+```
+
+## �📁 Project Structure
 
 ```
 ComPro/
