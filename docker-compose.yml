@@ -60,9 +60,9 @@ services:
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root_secret_password
     ports:
-      - "8081:80"
+      - "8080:80"
     networks:
       - landingcms-network
     depends_on:
