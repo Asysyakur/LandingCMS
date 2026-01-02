@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\BusinessSettingController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -33,3 +34,5 @@ Route::middleware(['loginrequired'])->prefix('admin/news')->name('admin.news.')-
 });
 Route::post('/admin/ckeditor/upload', [\App\Http\Controllers\NewsController::class, 'uploadEditorImage'])->name('admin.ckeditor.upload');
 
+Route::get('/business-setting/{page}', [BusinessSettingController::class, 'show'])
+    ->whereNumber('Page');
