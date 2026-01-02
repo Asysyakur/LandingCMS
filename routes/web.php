@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Admin\PreviewController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -26,9 +27,16 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::middleware(['loginrequired'])->get('/admin', function() {
-    return redirect()->route('admin.news.index');
+Route::middleware(['loginrequired'])->prefix('admin')->group(function () {
+    
+    Route::get('/landing/preview', [PreviewController::class, 'index'])
+        ->name('admin.landing.preview');
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 });
+
 Route::middleware(['loginrequired'])->prefix('admin/news')->name('admin.news.')->group(function() {
     Route::resource('/', NewsController::class)->parameters(['' => 'id']);
 });
