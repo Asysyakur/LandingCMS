@@ -1,4 +1,5 @@
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,66 +10,95 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.11.3/dist/echo.iife.js"></script>
 
     <style>
+        :root {
+            --sidebar-width: 280px;
+            --navbar-height: 70px;
+        }
+
         body {
-            overflow: hidden; /* Hilangkan overflow horizontal */
+            background-color: #FAFAFA;
+            overflow-x: hidden;
         }
-        .content {
-            height: calc(100vh - 56px); /* Sesuaikan dengan tinggi navbar */
-            overflow-y: auto; /* Biar cuma content yang bisa di-scroll */
-        }
+
+        /* Sidebar Desktop */
         #sidebar {
-            width: 256px;
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            background: white;
+            transition: all 0.3s ease-in-out;
         }
-        .border-left-primary {
-        border-left: 0.25rem solid #4e73df !important;
+
+        /* Content Area */
+        .content-wrapper {
+            width: calc(100% - var(--sidebar-width));
+            min-height: 100vh;
         }
-        .border-left-success {
-            border-left: 0.25rem solid #1cc88a !important;
+
+        .content {
+            height: calc(100vh - var(--navbar-height));
+            overflow-y: auto;
         }
-        .border-left-info {
-            border-left: 0.25rem solid #36b9cc !important;
-        }
-        /* Sidebar di mobile jadi fixed dan bisa disembunyikan */
+
+        /* Responsive Mobile (Tampilan HP/Tablet) */
         @media (max-width: 991.98px) {
             #sidebar {
                 position: fixed;
-                top: 89px;
-                left: -264px;
+                left: calc(-1 * var(--sidebar-width));
+                /* Sembunyi ke kiri */
                 height: 100vh;
-                transition: left 0.3s ease-in-out;
-                z-index: 1000;
             }
 
             #sidebar.show {
                 left: 0;
+                box-shadow: 10px 0 15px rgba(0, 0, 0, 0.05);
             }
 
-            .navbar {
+            .content-wrapper {
+                width: 100% !important;
+                /* Content full screen di HP */
+            }
+
+            /* Overlay saat sidebar muncul di mobile */
+            .sidebar-overlay {
+                display: none;
                 position: fixed;
                 top: 0;
-                height: 89px;
-                width: 100%;
-                z-index: 1050;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.1);
+                z-index: 1020;
             }
-            .content {
-                padding-top: 89px !important;
-                width: 100%;
+
+            #sidebar.show+.content-wrapper .sidebar-overlay {
+                display: block;
             }
         }
     </style>
     @stack('styles')
 </head>
+
 <body>
-    @include('components.navbar')
-    <div class="d-flex">
+    <div class="d-flex min-vh-100">
         @include('components.sidebar')
-        <div class="content flex-grow-1 p-4 isi-content" style="background-color: #FAFAFA;">
-            @yield('content')
+
+        <div class="content-wrapper flex-grow-1 d-flex flex-column">
+            <div class="sidebar-overlay toggler-btn"></div>
+
+            @include('components.navbar')
+
+            <div class="content p-3 p-md-4">
+                @yield('content')
+            </div>
         </div>
     </div>
 
@@ -77,12 +107,21 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('.toggler-btn').on('click', function () {
-                $('#sidebar').toggleClass('show');
-            });
+    $(document).ready(function() {
+        // Toggle sidebar saat tombol diklik
+        $('.toggler-btn').on('click', function() {
+            $('#sidebar').toggleClass('show');
         });
-    </script>
+
+        // Opsional: Tutup sidebar otomatis jika layar di-resize ke desktop
+        $(window).resize(function() {
+            if ($(window).width() > 991.98) {
+                $('#sidebar').removeClass('show');
+            }
+        });
+    });
+</script>
     @stack('scripts')
 </body>
+
 </html>
