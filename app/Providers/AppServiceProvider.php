@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
+    
     public function boot(): void
     {
         View::composer('components.site-footer', function ($view) {

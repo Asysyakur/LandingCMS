@@ -4,6 +4,50 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StatsController;
+
+
+Route::get('/business/{businessId}/stats/daily', [StatsController::class, 'daily']);
+
+/* Route::get('/business/{businessId}/stats/daily', function ($businessId) {
+
+    $data = [
+        [
+            'date' => '2025-01-01',
+            'total_visitors' => 45,
+            'total_pageviews' => 120,
+            'unique_visitors' => 38,
+        ],
+        [
+            'date' => '2025-01-02',
+            'total_visitors' => 52,
+            'total_pageviews' => 145,
+            'unique_visitors' => 41,
+        ],
+    ];
+
+    return response()->json([
+        'status' => true,
+        'business_id' => $businessId,
+        'data' => $data,
+    ]);
+}); */
+
+
+
+// get Analytics data
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::get('/dashboard', [DashboardController::class, 'analytics']);
+});
+
+
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show']);
+});
+
 
 // Route::get('/', function () {
 //     return view('welcome');
