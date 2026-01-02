@@ -1,29 +1,26 @@
 @props([
     'menu' => [
         ['label' => 'Home', 'url' => route('home')],
-        ['label' => 'About', 'url' => route('home').'#about-sec'],
-        ['label' => 'Legal', 'url' => route('home').'#legal-sec'],
-        ['label' => 'Values', 'url' => route('home').'#value-sec'],
-        ['label' => 'Team', 'url' => route('home').'#team-sec'],
-        ['label' => 'Products', 'url' => route('home').'#product-sec'],
-        ['label' => 'Network', 'url' => route('home').'#network-sec'],
+        ['label' => 'About', 'url' => route('home') . '#about-sec'],
+        ['label' => 'Legal', 'url' => route('home') . '#legal-sec'],
+        ['label' => 'Values', 'url' => route('home') . '#value-sec'],
+        ['label' => 'Team', 'url' => route('home') . '#team-sec'],
+        ['label' => 'Products', 'url' => route('home') . '#product-sec'],
+        ['label' => 'Network', 'url' => route('home') . '#network-sec'],
         ['label' => 'News & Articles', 'url' => route('news')],
-        ['label' => 'Contact', 'url' => route('home').'#contact-sec'],
+        ['label' => 'Contact', 'url' => route('home') . '#contact-sec'],
     ],
     'contacts' => [
         'address' => 'Jl. Temanggung No. 27, Kec. Antapani, Kota Bandung, Jawa Barat',
         'phone_display' => '+62 xxx - xxxx - xxxx',
         'phone_raw' => '+62xxxxxxxxxxx',
-        'emails' => [
-            'moneyhub.cas@gmail.com',
-            'corsec@moneyhub.co.id',
-        ],
+        'emails' => ['moneyhub.cas@gmail.com', 'corsec@moneyhub.co.id'],
     ],
     'homeRoute' => 'home',
 ])
 
 @php
-    $isActive = function($itemUrl) {
+    $isActive = function ($itemUrl) {
         $current = url()->current();
         $base = explode('#', $itemUrl)[0];
         return $current === $base;
@@ -41,7 +38,7 @@
         </div>
         <div class="th-mobile-menu">
             <ul>
-                @foreach($menu as $m)
+                @foreach ($menu as $m)
                     <li><a href="{{ $m['url'] }}">{{ $m['label'] }}</a></li>
                 @endforeach
             </ul>
@@ -50,63 +47,59 @@
 </div>
 
 <header class="th-header header-layout2">
-    {{-- Top Bar --}}
-    <div class="header-top">
-        <div class="container">
-            <div class="row justify-content-center justify-content-lg-between align-items-center gy-2">
-                <div class="col-auto d-none d-lg-block">
-                    <div class="header-links">
-                        <ul>
-                            @if(!empty($contacts['address']))
-                                <li><i class="fas fa-map-location"></i> {{ $contacts['address'] }}</li>
-                            @endif
-                            @if(!empty($contacts['phone_raw']))
-                                <li><i class="fas fa-phone"></i>
-                                    <a href="tel:{{ $contacts['phone_raw'] }}">{{ $contacts['phone_display'] }}</a>
-                                </li>
-                            @endif
-                            @if(!empty($contacts['emails']))
-                                @foreach($contacts['emails'] as $email)
-                                    <li><i class="fas fa-envelope"></i><a href="mailto:{{ $email }}">{{ $email }}</a></li>
-                                @endforeach
-                            @endif
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Main Menu --}}
     <div class="sticky-wrapper">
         <div class="menu-area">
             <div class="container">
                 <div class="row align-items-center justify-content-between">
+
+                    {{-- LOGO --}}
                     <div class="col-auto">
                         <div class="header-logo">
-                            <a class="icon-masking" href="{{ route($homeRoute) }}">
-            
-                                <img src="{{ asset('assets/images/logo.svg') }}" alt="MoneyHub">
+                            <a href="{{ route('home') }}">
+                                <img src="{{ asset('assets/images/CMSLogo.svg') }}" alt="CMS Logo">
                             </a>
                         </div>
                     </div>
+
+                    {{-- RIGHT ACTIONS --}}
                     <div class="col-auto">
-                        <nav class="main-menu d-none d-lg-inline-block">
-                            <ul>
-                                @foreach($menu as $m)
-                                    <li class="{{ $isActive($m['url']) ? 'active' : '' }}">
-                                        <a href="{{ $m['url'] }}">{{ $m['label'] }}</a>
+                        <div class="header-right">
+
+                            {{-- Language --}}
+                            <div class="header-links language-dropdown d-none d-md-inline-block">
+                                <ul class="nav">
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            English
+                                            {{-- <i class="far fa-chevron-down"></i> --}}
+                                        </a>
+
+                                        <ul class="dropdown-menu" aria-labelledby="langDropdown">
+                                            <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                                            <li><a class="dropdown-item" href="?lang=id">Bahasa Indonesia</a></li>
+                                        </ul>
                                     </li>
-                                @endforeach
-                            </ul>
-                        </nav>
-                        <div class="header-button d-inline-block d-lg-none">
-                            <button type="button" class="th-menu-toggle" aria-label="Open mobile menu">
+                                </ul>
+                            </div>
+
+                            {{-- Sign Up --}}
+                            <a href="#" class="th-btn style4 ms-3">
+                                Sign Up
+                            </a>
+
+                            {{-- Log In --}}
+                            <a href="#" class="th-btn ms-2">
+                                Log In <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+
+                            {{-- Mobile Menu Toggle --}}
+                            <button type="button" class="th-menu-toggle d-inline-block d-lg-none ms-2">
                                 <i class="far fa-bars"></i>
                             </button>
+
                         </div>
-                        {{-- Side menu opsional kalau mau nanti --}}
                     </div>
+
                 </div>
             </div>
         </div>
