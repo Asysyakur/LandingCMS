@@ -32,5 +32,10 @@ Route::middleware(['loginrequired'])->get('/admin', function() {
 Route::middleware(['loginrequired'])->prefix('admin/news')->name('admin.news.')->group(function() {
     Route::resource('/', NewsController::class)->parameters(['' => 'id']);
 });
+
+Route::middleware(['loginrequired'])->get('/admin/content-version', function() {
+    return view('admin.contentVer.index'); 
+})->name('admin.contentVer.index');
+
 Route::post('/admin/ckeditor/upload', [\App\Http\Controllers\NewsController::class, 'uploadEditorImage'])->name('admin.ckeditor.upload');
 

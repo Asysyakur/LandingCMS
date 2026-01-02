@@ -23,8 +23,8 @@
         [
             'label' => 'Content Versioning',
             'icon'  => 'bi-columns-gap', // Ikon kotak 3 baris sesuai gambar
-            'route' => 'admin.versions.index',
-            'active'=> Str::contains($currentRoute, 'version')
+            'route' => 'admin.contentVer.index',
+            'active'=> Str::contains($currentRoute, 'content')
         ],
         [
             'label' => 'Business Setting',
@@ -42,6 +42,7 @@
         border-right: 1px solid #f0f0f0;
         display: flex;
         flex-direction: column;
+        padding: 0px 32px 0px 32px;
     }
 
     .custom-btn {
@@ -113,14 +114,4 @@
             </li>
         @endforeach
     </ul>
-
-    <div class="mt-auto p-3 border-top">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="custom-btn logout-btn">
-                <div class="icon"><i class="bi bi-box-arrow-left"></i></div>
-                <span>Logout</span>
-            </button>
-        </form>
-    </div>
 </div>

@@ -16,7 +16,7 @@
 
     <style>
         :root {
-            --sidebar-width: 280px;
+            --sidebar-width: 317px;
             --navbar-height: 70px;
         }
 
