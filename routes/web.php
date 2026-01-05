@@ -34,5 +34,9 @@ Route::middleware(['loginrequired'])->prefix('admin/news')->name('admin.news.')-
 });
 Route::post('/admin/ckeditor/upload', [\App\Http\Controllers\NewsController::class, 'uploadEditorImage'])->name('admin.ckeditor.upload');
 
-Route::get('/business-setting/{page}', [BusinessSettingController::class, 'show'])
-    ->whereNumber('Page');
+Route::prefix('business-setting')->group(function(){
+    Route::get('/{page}', [BusinessSettingController::class, 'show'])
+        ->whereNumber('Page');
+    Route::put('/{page}', [BusinessSettingController::class, 'update']);
+    Route::delete('/{page}', [BusinessSettingController::class, 'destroy']);
+});
