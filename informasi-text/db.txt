@@ -1,0 +1,73 @@
+-- 1. Tabel Users
+CREATE TABLE users (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    email_verified_at TIMESTAMP NULL,
+    password VARCHAR(255) NOT NULL,
+    remember_token VARCHAR(100) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 2. Tabel Visitors
+CREATE TABLE visitors (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    first_seen_at TIMESTAMP NULL,
+    last_seen_at TIMESTAMP NULL
+);
+
+-- 3. Tabel Components
+CREATE TABLE components (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL,
+    default_schema JSON NULL
+);
+
+-- 4. Tabel Pages (Relasi ke Users)
+CREATE TABLE pages (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    slug VARCHAR(255) NULL,
+    title VARCHAR(255) NULL,
+    status ENUM('draft', 'published') DEFAULT 'draft',
+    created_by VARCHAR(255),
+    business_profile JSON NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- 5. Tabel Page Components (Relasi ke Pages dan Components)
+CREATE TABLE page_components (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    page_id VARCHAR(255),
+    component_id VARCHAR(255),
+    order_index INT,
+    content JSON NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE,
+    FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE
+);
+
+-- 6. Tabel Page Versions (Relasi ke Pages)
+CREATE TABLE page_versions (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    page_id VARCHAR(255),
+    version_name VARCHAR(50),
+    version_description TEXT,
+    data_snapshot JSON NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
+);
+
+-- 7. Tabel Page Visits (Relasi ke Visitors dan Pages)
+CREATE TABLE page_visits (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    visitor_id VARCHAR(255) NOT NULL,
+    page_id VARCHAR(255) NOT NULL,
+    visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (visitor_id) REFERENCES visitors(id) ON DELETE CASCADE,
+    FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
+);

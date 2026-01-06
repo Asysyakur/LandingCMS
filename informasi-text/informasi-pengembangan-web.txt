@@ -1,0 +1,49 @@
+================================================================================
+DAFTAR PENGEMBANGAN FITUR LANDING CMS
+================================================================================
+
+1. Nama Fitur       : Custom Field Layout (Section-Based CMS)
+   Keterangan       : Fitur CMS yang memungkinkan admin (UMKM) menyusun halaman 
+                      website berdasarkan section siap pakai seperti Hero, 
+                      Fitur, Tentang Kami, Layanan, Testimoni, dan Kontak. 
+                      Setiap section memiliki field yang berbeda dan otomatis 
+                      menyesuaikan sesuai tipe section yang dipilih.
+
+2. Nama Fitur       : Responsive Preview
+   Keterangan       : Fitur yang memungkinkan admin (UMKM) melihat tampilan 
+                      website dalam berbagai ukuran layar (desktop, tablet, 
+                      dan mobile) langsung dari dalam CMS, tanpa perlu membuka 
+                      perangkat lain.
+
+3. Nama Fitur       : Authentication (Login & Akses Pengguna)
+   Keterangan       : Fitur yang memungkinkan pengguna (UMKM) masuk ke sistem CMS 
+                      menggunakan akun pribadi untuk mengelola website mereka. 
+                      Memastikan hanya pengguna berwenang yang dapat mengedit, 
+                      menerbitkan, dan mengelola konten.
+
+4. Nama Fitur       : Content Versioning
+   Keterangan       : Fitur untuk melihat riwayat perubahan konten dan melakukan 
+                      rollback (kembali) ke versi sebelumnya jika diperlukan.
+
+5. Nama Fitur       : Publish Website
+   Keterangan       : Mekanisme agar konten yang dibuat oleh UMKM di CMS bisa 
+                      langsung diakses secara publik tanpa harus melakukan 
+                      proses koding atau deployment manual.
+
+6. Nama Fitur       : wa.me Formatter
+   Keterangan       : Tipe field atau logika khusus untuk memformat nomor 
+                      telepon secara otomatis menjadi tautan WhatsApp (wa.me) 
+                      yang siap digunakan.
+
+7. Nama Fitur       : Pengubahan Ukuran Otomatis (Image Optimizer)
+   Keterangan       : Fitur pengubahan ukuran otomatis (misal: batasi lebar 
+                      800px atau batas ukuran ~5MB) agar penyimpanan server 
+                      efisien dan mencegah pengunggahan gambar mentah yang 
+                      terlalu berat oleh pemilik UMKM.
+
+8. Nama Fitur       : Statistik Pengunjung
+   Keterangan       : Fitur untuk melihat data total pengunjung yang mengakses 
+                      landing page sebagai acuan efektivitas halaman yang 
+                      telah dibuat.
+
+================================================================================

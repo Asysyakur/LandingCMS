@@ -1,0 +1,273 @@
+Table users,,,,,,,,
+id (PK),name,email,email_verified_at,password,remember_token,created_at,updated_at,
+user-acep-uuid,Acep Senja,acep@senja.com,2024-01-12 11:00,$2y$10$p6...,6,2024-01-12,2024-01-12,
+,,,,,,,,
+Table pages,,,,,,,,
+id (PK),slug,title,status,created_by (FK),metadata,created_at,updated_at,business_profile
+page-kopisenja-uuid,kopi-senja,Landing Page Promo Kopi Senja,published,user-acep-uuid,"{
+  ""meta_title"": ""Kopi Senja - Kopi Terbaik di Jakarta Selatan"",
+  ""meta_description"": ""Nikmati racikan kopi lokal premium dengan suasana senja yang menenangkan. Buka setiap hari jam 10.00 - 22.00 WIB."",
+  ""keywords"": ""kopi senja, cafe jakarta selatan, kopi susu gula aren, tempat nongkrong tebet"",
+  ""canonical_url"": ""https://kopi-senja.compro.id/"",
+  ""robots"": ""index, follow"",
+  ""author"": ""Kopi Senja Team"",
+  ""og_title"": ""Nongkrong Asik di Kopi Senja"",
+  ""og_description"": ""Lagi cari tempat WFC atau nongkrong? Mampir ke Kopi Senja sekarang!"",
+  ""og_image"": ""https://cdn.kopisenja.id/assets/og-home-v2.jpg"",
+  ""twitter_card"": ""summary_large_image""
+}",2024-01-25,2024-01-24,"{
+  ""name"": ""Kopi Senja Abadi"",
+  ""tagline"": ""Teman Nyaman di Kala Senja"",
+  ""description"": ""Kopi Senja Abadi didirikan pada masa Soekarno"",
+  ""logo_url"": ""https://cdn.example.com/logos/kopi-senja.png"",
+  ""favicon_url"": ""https://cdn.example.com/favicons/kopi.ico"",
+  ""location"": ""Jl. Senopati No. 100, Kebayoran Baru""
+}"
+,,,,,,,,
+Tabel components,,,,,,,,
+id (PK),name,slug,default_schema,,,,,
+comp-hero-uuid,Hero Banner,hero,"{
+  ""tabs"": [
+    {
+      ""label"": ""Content"",
+      ""fields"": [
+        {
+          ""key"": ""title"",
+          ""type"": ""text"",
+          ""label"": ""Judul Utama"",
+          ""default_value"": ""Headline Menarik Disini""
+        },
+        {
+          ""key"": ""subtitle"",
+          ""type"": ""textarea"",
+          ""label"": ""Deskripsi Singkat"",
+          ""default_value"": ""Deskripsikan produk Anda disini""
+        },
+        {
+          ""key"": ""bg_image"",
+          ""type"": ""image"",
+          ""label"": ""Gambar Background"",
+          ""default_value"": null
+        },
+        {
+          ""key"": ""cta_text"",
+          ""type"": ""text"",
+          ""label"": ""Teks Tombol"",
+          ""default_value"": ""Mulai Sekarang""
+        },
+        {
+          ""key"": ""cta_link"",
+          ""type"": ""url"",
+          ""label"": ""Link Tombol"",
+          ""default_value"": ""#""
+        }
+      ]
+    },
+  ]
+}",,,,,
+comp-features-uuid,Features,features,"{
+  ""tabs"": [
+    {
+      ""label"": ""Content"",
+      ""fields"": [
+        {
+          ""key"": ""section_title"",
+          ""type"": ""text"",
+          ""label"": ""Judul Section"",
+          ""default_value"": ""Keunggulan Kami""
+        },
+        {
+          ""key"": ""items"",
+          ""type"": ""repeater"",
+          ""label"": ""Daftar Fitur"",
+          ""item_label"": ""Fitur"",
+          ""schema"": [
+            {
+              ""key"": ""title"",
+              ""type"": ""text"",
+              ""label"": ""Judul Fitur"",
+              ""default_value"": ""Fitur Baru""
+            },
+            {
+              ""key"": ""description"",
+              ""type"": ""textarea"",
+              ""label"": ""Penjelasan"",
+              ""default_value"": ""Jelaskan keunggulan fitur ini.""
+            },
+            {
+              ""key"": ""icon"",
+              ""type"": ""image"",
+              ""label"": ""Ikon"",
+              ""default_value"": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}",,,,,
+comp-contact-uuid,Contact,contact,"{
+  ""tabs"": [
+    {
+      ""label"": ""Content"",
+      ""fields"": [
+        {
+          ""key"": ""phone"",
+          ""type"": ""text"",
+          ""label"": ""Nomor Telepon"",
+          ""default_value"": ""62""
+        },
+        {
+          ""key"": ""email"",
+          ""type"": ""email"",
+          ""label"": ""Alamat Email"",
+          ""default_value"": ""info@example.com""
+        },
+        {
+          ""key"": ""address"",
+          ""type"": ""textarea"",
+          ""label"": ""Alamat Lengkap"",
+          ""default_value"": ""Jl""
+        }
+      ]
+    }
+  ]
+}",,,,,
+comp-about-uuid,About,about,"{
+  ""tabs"": [
+    {
+      ""label"": ""Content"",
+      ""fields"": [
+        {
+          ""key"": ""title"",
+          ""type"": ""text"",
+          ""label"": ""Judul Section"",
+          ""default_value"": ""Tentang Kami""
+        },
+        {
+          ""key"": ""description"",
+          ""type"": ""textarea"",
+          ""label"": ""Deskripsi Bisnis"",
+          ""default_value"": ""Ceritakan bisnis Anda""
+        },
+        {
+          ""key"": ""image"",
+          ""type"": ""image"",
+          ""label"": ""Foto Ilustrasi"",
+          ""default_value"": null
+        }
+      ]
+    }
+  ]
+}",,,,,
+,,,,,,,,
+Tabel page_components,,,,,,,,
+id (PK),page_id (FK),component_id (FK),order_index,content,is_active,,,
+pc-kopisenja-hero1-uuid,page-kopisenja-uuid,comp-hero-uuid,1,"{
+  ""title"": ""Fresh Coffee Everyday"",
+  ""subtitle"": ""Brewed with passion, served with love"",
+  ""bg_image"": ""/images/hero.jpg"",
+  ""cta_text"": ""Order Now"",
+  ""cta_link"": ""https://wa.me/628123456789"",
+},",TRUE,,,
+pc-kopisenja-features1-uuid,page-kopisenja-uuid,comp-features-uuid,2,"{
+  ""section_title"": ""Mengapa Memilih Kami?"",
+  ""items"": [
+    {
+      ""title"": ""Biji Kopi Premium"",
+      ""description"": ""Dipetik langsung dari petani lokal pilihan dengan kualitas ekspor."",
+      ""icon"": ""/icons/beans.svg""
+    },
+    {
+      ""title"": ""Pengiriman Cepat"",
+      ""description"": ""Kopi sampai di depan pintu Anda dalam waktu kurang dari 30 menit."",
+      ""icon"": ""/icons/fast-delivery.svg""
+    },
+    {
+      ""title"": ""Order Mudah"",
+      ""description"": ""Cukup satu klik via WhatsApp tanpa perlu install aplikasi ribet."",
+      ""icon"": ""/icons/whatsapp.svg""
+    }
+  ]
+}",TRUE,,,
+pc-kopisenja-contact1-uuid,page-kopisenja-uuid,comp-contact-uuid,3,"{
+  ""phone"": ""6281234567890"",
+  ""email"": ""hello@kopisenja.id"",
+  ""address"": ""Jl. Kopi No. 10, Jakarta""
+}",TRUE,,,
+pc-kopisenja-about1-uuid,page-kopisenja-uuid,comp-about-uuid,4,"{
+  ""title"": ""About Our Business"",
+  ""description"": ""Kopi Nusantara provides high-quality coffee made from selected local beans."",
+  ""image"": ""/images/about.jpg""
+}",TRUE,,,
+,,,,,,,,
+Tabel page_versions,,,,,,,,
+id (PK),page_id (FK),version_name,version_description,data_snapshot,created_at,,,
+pv-kopisenja1-uuid,page-kopisenja-uuid,v1.0 Initial Launch,"Versi pertama publish, ada hero dan contact","{
+  ""page_settings"": {
+    ""title"": ""Landing Page Promo Kopi Senja"",
+    ""slug"": ""kopi-senja"",
+    ""business_profile"": {
+      ""name"": ""Kopi Senja Abadi"",
+      ""tagline"": ""Teman Nyaman di Kala Senja"",
+      ""description"": ""Kopi Senja Abadi didirikan pada masa Soekarno"",
+      ""logo_url"": ""https://cdn.example.com/logos/kopi-senja.png"",
+      ""favicon_url"": ""https://cdn.example.com/favicons/kopi.ico"",
+      ""location"": ""Jl. Senopati No. 100, Kebayoran Baru""
+     },
+     ""metadata"": {
+       ""meta_title"": ""Kopi Senja - Kopi Terbaik di Jakarta Selatan"",
+       ""meta_description"": ""Nikmati racikan kopi lokal premium dengan suasana senja yang menenangkan. Buka setiap hari jam 10.00 - 22.00 WIB."",
+       ""keywords"": ""kopi senja, cafe jakarta selatan, kopi susu gula aren, tempat nongkrong tebet"",
+       ""canonical_url"": ""https://kopi-senja.compro.id/"",
+       ""robots"": ""index, follow"",
+       ""author"": ""Kopi Senja Team"",
+       ""og_title"": ""Nongkrong Asik di Kopi Senja"",
+       ""og_description"": ""Lagi cari tempat WFC atau nongkrong? Mampir ke Kopi Senja sekarang!"",
+       ""og_image"": ""https://cdn.kopisenja.id/assets/og-home-v2.jpg"",
+       ""twitter_card"": ""summary_large_image""
+     }
+   },
+   ""components"": [
+     {
+       ""id"": ""comp-hero-uuid"",
+       ""type"": ""hero"",
+       ""order"": 1,
+       ""fields"": {
+         ""title"": ""Fresh Coffee Everyday"",
+         ""subtitle"": ""Brewed with passion, served with love"",
+         ""bg_image"": ""/images/hero.jpg"",
+         ""cta_text"": ""Order Now"",
+         ""cta_link"": ""https://wa.me/628123456789""
+       },
+       ""is_active"": true
+     },
+     {
+       ""id"": ""comp-contact-uuid"",
+       ""type"": ""contact"",
+       ""order"": 2,
+       ""fields"": {
+         ""phone"": ""6281234567890"",
+         ""email"": ""hello@kopisenja.id"",
+         ""address"": ""Jl. Kopi No. 10, Jakarta""
+      },
+      ""is_active"": true
+    }
+  ]
+}",2024-01-24,,,
+,,,,,,,,
+Tabel visitors,,,,,,,,
+id (PK),first_seen_at,last_seen_at,,,,,,
+1,2024-01-01 10:00,2024-01-01 10:30,,,,,,
+2,2024-01-01 11:15,2024-01-02 9:00,,,,,,
+3,2024-01-02 14:00,2024-01-02 14:05,,,,,,
+4,2024-01-03 8:20,2024-01-05 10:00,,,,,,
+5,2024-01-05 19:00,2024-01-05 19:45,,,,,,
+,,,,,,,,
+Tabel page_visits,,,,,,,,
+id (PK),visitor_id (FK),page_id (FK),visited_at,,,,,
+1,1,1,2024-01-01 10:00,,,,,
+2,1,2,2024-01-01 10:05,,,,,
+3,2,1,2024-01-01 11:15,,,,,
+4,3,4,2024-01-02 14:00,,,,,
+5,4,1,2024-01-03 8:20,,,,,

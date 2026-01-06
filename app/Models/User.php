@@ -6,11 +6,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +45,32 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'id' => 'string',
         ];
+    }
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    /**
+     * Get the pages created by the user.
+     */
+    public function pages(): HasMany
+    {
+        return $this->hasMany(Page::class, 'created_by');
+    }
+
+    /**
+     * Boot function to generate UUID for new users.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($user) {
+            if (empty($user->id)) {
+                $user->id = \Illuminate\Support\Str::uuid();
+            }
+        });
     }
 }

@@ -1,0 +1,213 @@
+,,
+Proses,Endpoint,Mock Data
+,,
+Register,/register,"export const registerResponseMock = {
+  status: true,
+  data: {
+    id: 6,
+    username: ""Acep Senja"",
+    email: ""acep@senja.com"",
+    created_at: ""2024-01-12"",
+  },
+};
+"
+Login,/login,"export const loginResponseMock = {
+  status: true,
+  message: ""Login successfully""
+};"
+Get Analytic,/dashboard,"export const getAnalyticMock = {
+ status: true,
+ data: {
+    user_id: 6,
+    period: {
+      start_date: ""2025-01-01 09:00"",
+      end_date: ""2025-01-07 23:59"",
+    },
+
+    summary: {
+      total_visitors: 3,
+      unique_visitors: 1,
+      bounce_rate: 66, // persen
+    },
+
+    visitors_chart: [
+      { date: ""2024-01-01"", visitors: 2 },
+      { date: ""2025-01-02"", visitors: 1 },
+    ],
+  },
+};"
+Get Manage Landing,/manage-landing,"export const getManageLandingMock = {
+  status: true,
+  data: {
+    user_id: 6,
+    pages_id: 1,
+
+    sections: [
+      {
+        id: 1,
+        type: ""hero"",
+        is_active: true,
+        order: 1,
+        fields: {
+          title: ""Grow Your Business with Ease"",
+          subtitle: ""Create a professional landing page in minutes"",
+          background_image: ""/images/hero.jpg"",
+          cta_text: ""Get Started"",
+          cta_link: ""https://wa.me/628123456789"",
+        },
+      },
+
+      {
+        id: 2,
+        type: ""features"",
+        is_active: true,
+        order: 2,
+        fields: {
+          heading: ""Why Choose Us"",
+          items: [
+            {
+              title: ""Easy to Use"",
+              description: ""Build your landing page without coding skills."",
+              icon: ""sparkles"",
+            },
+            {
+              title: ""Responsive Design"",
+              description: ""Looks great on mobile and desktop devices."",
+              icon: ""devices"",
+            },
+            {
+              title: ""Fast Publishing"",
+              description: ""Publish your website in just one click."",
+              icon: ""rocket"",
+            },
+          ],
+        },
+      },
+
+      {
+        id: 3,
+        type: ""about"",
+        is_active: true,
+        order: 3,
+        fields: {
+          title: ""About Our Business"",
+          description:
+            ""Kopi Nusantara provides high-quality coffee made from selected local beans."",
+          image: ""/images/about.jpg"",
+        },
+      },
+    ],
+  },
+};
+"
+Get Business Setting,/business-setting,"export const getBusinessSettingMock = {
+  status: true,
+  data: {
+    user_id: 6,
+    business_info: {
+      business_name: ""Kopi Nusantara"",
+      tagline: ""Premium Local Coffee"",
+      description:
+        ""Kopi Nusantara provides high-quality coffee made from selected Indonesian beans."",
+      logo: ""/images/logo.png"",
+      favicon:""/image/logo.png"",
+      contact_info: ""089212312"",
+      location: ""locationmaps"",
+    },    
+};"
+Count Visitor,/analytics/visitor,"{
+  ""status"": true
+  ""data"": {
+    ""is_new_visit"": true
+  }
+}"
+Get Conten Version,/content-version,"export const getContentVersion = {
+  status: true,
+  data:{
+    page_id: 1,
+    version_list: [
+        {
+           version_name: ""v1.0 Launch"",
+           data_snapshot: {""raw"":""...""},
+           created_at: ""2024-01-01"",
+           status: draft      //active || draft,
+       },
+       {
+           version_name: ""v1.1 Update CSS"",
+           data_snapshot: {""raw"":""...""},
+           created_at: ""2024-01-05"",
+           status: draft      //active || draft,
+       },
+      {
+           version_name: ""v1.1 Update CSS"",
+           data_snapshot: {""raw"":""...""},
+           created_at: ""2024-01-05"",
+           status: active      //active || draft,
+       },
+    ],
+  },
+};
+            "
+Get Preview Landing,/preview,"export const getLandingPreviewMock = {
+  status: true,
+  data: {
+    page_id: 1,
+    business: {
+      name: ""Kopi Senja"",
+      tagline: ""Fresh Coffee Everyday"",
+      logo: ""/images/logo.png""
+    },
+
+    sections: [
+      {
+        id: ""hero-1"",
+        type: ""hero"",
+        order: 1,
+        is_active: true,
+        fields: {
+          heading: ""Fresh Coffee Everyday"",
+          subheading: ""Brewed with passion, served with love"",
+          background_image: ""/images/hero.jpg"",
+          cta_text: ""Order Now"",
+          cta_link: ""#order""
+        }
+      },
+      {
+        id: ""features-1"",
+        type: ""features"",
+        order: 2,
+        is_active: true,
+        fields: {
+          items: [
+            {
+              title: ""Premium Beans"",
+              description: ""Selected quality coffee beans""
+            },
+            {
+              title: ""Fast Delivery"",
+              description: ""Delivered fresh to your door""
+            },
+            {
+              title: ""Easy Order"",
+              description: ""Order via WhatsApp in one click""
+            }
+          ]
+        }
+      },
+      {
+        id: ""contact-1"",
+        type: ""contact"",
+        order: 3,
+        is_active: true,
+        fields: {
+          phone: ""+62 812-3456-7890"",
+          email: ""hello@kopisenja.id"",
+          address: ""Jl. Kopi No. 10, Jakarta""
+        }
+      }
+    ],
+
+    last_saved_at: ""2025-01-05 16:45""
+  }
+}
+"

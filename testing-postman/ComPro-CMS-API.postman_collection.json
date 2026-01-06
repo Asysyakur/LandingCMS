@@ -1,0 +1,933 @@
+{
+  "info": {
+    "name": "ComPro CMS API",
+    "description": "Complete API collection for ComPro CMS Backend - Landing Page Builder for UMKM",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "ComPro_CMS_v1"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "page_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "component_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "version_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.data && response.data.token) {",
+                  "        pm.collectionVariables.set('access_token', response.data.token);",
+                  "        console.log('Token saved:', response.data.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test UMKM Owner\",\n    \"email\": \"umkm@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.data && response.data.token) {",
+                  "        pm.collectionVariables.set('access_token', response.data.token);",
+                  "        console.log('Token saved:', response.data.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"umkm@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated UMKM Owner\",\n    \"email\": \"umkm@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"current_password\": \"password123\",\n    \"password\": \"newpassword123\",\n    \"password_confirmation\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/change-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "change-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "logout"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. CMS - Pages Management",
+      "item": [
+        {
+          "name": "List All Pages",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.data && response.data.id) {",
+                  "        pm.collectionVariables.set('page_id', response.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Toko Kue Manis Bandung\",\n    \"slug\": \"toko-kue-manis\",\n    \"business_profile\": {\n        \"company_name\": \"Toko Kue Manis\",\n        \"logo\": \"https://example.com/logo.png\",\n        \"phone\": \"08123456789\",\n        \"email\": \"info@tokokuemanis.com\",\n        \"address\": \"Jl. Raya Bandung No. 123, Bandung\"\n    },\n    \"metadata\": {\n        \"description\": \"Toko kue homemade terbaik di Bandung\",\n        \"keywords\": \"kue, bandung, homemade, umkm\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Page Details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Toko Kue Manis - Updated\",\n    \"slug\": \"toko-kue-manis-bandung\",\n    \"status\": \"published\",\n    \"business_profile\": {\n        \"company_name\": \"Toko Kue Manis Bandung\",\n        \"phone\": \"08123456789\",\n        \"email\": \"info@tokokuemanis.com\",\n        \"address\": \"Jl. Raya Bandung No. 123, Bandung\"\n    },\n    \"metadata\": {\n        \"description\": \"Toko kue homemade terbaik di Bandung - Updated\",\n        \"keywords\": \"kue, bandung, homemade, umkm, terbaik\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. CMS - Components",
+      "item": [
+        {
+          "name": "List All Components",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/components",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "components"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Component to Page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.data && response.data.id) {",
+                  "        pm.collectionVariables.set('component_id', response.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"component_id\": \"{{component_id}}\",\n    \"content\": {\n        \"title\": \"Selamat Datang di Toko Kue Manis\",\n        \"subtitle\": \"Kue homemade terbaik di Bandung\",\n        \"description\": \"Kami menyediakan berbagai macam kue homemade dengan bahan berkualitas tinggi\",\n        \"cta_text\": \"Pesan Sekarang\",\n        \"cta_link\": \"https://wa.me/628123456789\",\n        \"background_image\": \"https://example.com/hero-bg.jpg\"\n    },\n    \"order_index\": 0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}/components",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}", "components"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page Component",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\": {\n        \"title\": \"Selamat Datang di Toko Kue Manis - Updated\",\n        \"subtitle\": \"Kue homemade terbaik di Bandung sejak 2020\",\n        \"description\": \"Kami menyediakan berbagai macam kue homemade dengan bahan berkualitas tinggi dan resep turun temurun\",\n        \"cta_text\": \"Hubungi Kami\",\n        \"cta_link\": \"https://wa.me/628123456789\",\n        \"background_image\": \"https://example.com/hero-bg-updated.jpg\"\n    },\n    \"order_index\": 0,\n    \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}/components/{{component_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}", "components", "{{component_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Component from Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}/components/{{component_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}", "components", "{{component_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Version Management",
+      "item": [
+        {
+          "name": "Get Page Versions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}/versions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}", "versions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Restore Page Version",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.data && response.data.id) {",
+                  "        pm.collectionVariables.set('version_id', response.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cms/pages/{{page_id}}/versions/{{version_id}}/restore",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cms", "pages", "{{page_id}}", "versions", "{{version_id}}", "restore"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Analytics",
+      "item": [
+        {
+          "name": "Dashboard Stats",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/analytics/dashboard?period=30days",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analytics", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "30days"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Page Analytics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/analytics/pages/{{page_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analytics", "pages", "{{page_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Track Visitor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fingerprint\": \"fp_12345\",\n    \"referrer\": \"https://google.com\",\n    \"user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\",\n    \"ip_address\": \"192.168.1.1\",\n    \"screen_resolution\": \"1920x1080\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/analytics/track/toko-kue-manis",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analytics", "track", "toko-kue-manis"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "6. Preview",
+      "item": [
+        {
+          "name": "Preview Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/preview/pages/{{page_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "preview", "pages", "{{page_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Responsive Preview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/preview/pages/{{page_id}}/responsive",
+              "host": ["{{base_url}}"],
+              "path": ["api", "preview", "pages", "{{page_id}}", "responsive"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Component Schema",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/preview/components/hero/schema",
+              "host": ["{{base_url}}"],
+              "path": ["api", "preview", "components", "hero", "schema"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Component Preview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Preview Hero Component\",\n    \"subtitle\": \"This is a preview subtitle\",\n    \"cta_text\": \"Click Me\",\n    \"cta_link\": \"#\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/preview/components/hero/preview",
+              "host": ["{{base_url}}"],
+              "path": ["api", "preview", "components", "hero", "preview"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Public Page Preview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/preview/public/toko-kue-manis",
+              "host": ["{{base_url}}"],
+              "path": ["api", "preview", "public", "toko-kue-manis"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "console.log('Request sent at: ' + new Date().toISOString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "pm.test('Response has status code 200 or 201', function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+          "});",
+          "",
+          "pm.test('Response time is less than 3000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+          "});"
+        ]
+      }
+    }
+  ]
+}
