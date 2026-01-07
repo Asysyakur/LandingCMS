@@ -1,0 +1,886 @@
+openapi: 3.0.3
+info:
+  title: ComPro CMS API
+  description: API documentation for ComPro Landing Page Content Management System
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@compro.id
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://127.0.0.1:8000/api
+    description: Development server
+  - url: https://your-domain.com/api
+    description: Production server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Laravel Sanctum token authentication
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "79aec364-a6a0-4c02-b5aa-1ea690122195"
+        name:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Page:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "6b2665a1-76ea-442c-9714-804d0ac4f153"
+        title:
+          type: string
+          example: "Toko Kue Manis"
+        slug:
+          type: string
+          example: "toko-kue-manis"
+        status:
+          type: string
+          enum: [draft, published]
+          example: "published"
+        created_by:
+          type: string
+          format: uuid
+          example: "79aec364-a6a0-4c02-b5aa-1ea690122195"
+        business_profile:
+          $ref: '#/components/schemas/BusinessProfile'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    BusinessProfile:
+      type: object
+      properties:
+        company_name:
+          type: string
+          example: "Toko Kue Manis"
+        logo:
+          type: string
+          format: uri
+          example: "https://example.com/logo.png"
+        phone:
+          type: string
+          example: "08123456789"
+        email:
+          type: string
+          format: email
+          example: "info@tokokuemanis.com"
+        address:
+          type: string
+          example: "Jl. Raya Bandung No. 123, Bandung"
+
+    Metadata:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "Toko kue homemade terbaik di Bandung"
+        keywords:
+          type: string
+          example: "kue, bandung, homemade, umkm"
+
+    Component:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "ce6799b7-101b-4cf9-a80a-47a3d8b5c3c0"
+        name:
+          type: string
+          example: "Hero Banner"
+        slug:
+          type: string
+          example: "hero"
+        default_schema:
+          type: object
+          description: Component field schema
+
+    PageComponent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "e24d8e2e-cbb0-44f4-ba92-cfdbd8164c9e"
+        page_id:
+          type: string
+          format: uuid
+          example: "6b2665a1-76ea-442c-9714-804d0ac4f153"
+        component_id:
+          type: string
+          format: uuid
+          example: "ce6799b7-101b-4cf9-a80a-47a3d8b5c3c0"
+        order_index:
+          type: integer
+          example: 0
+        content:
+          type: object
+          example:
+            title: "Hero Title"
+            subtitle: "Hero Subtitle"
+        is_active:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        component:
+          $ref: '#/components/schemas/Component'
+
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Success"
+        data:
+          type: object
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Error occurred"
+        error:
+          type: string
+          example: "validation_error"
+
+  responses:
+    Unauthorized:
+      description: Unauthorized access
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: false
+            message: "Token required"
+            error: "missing_token"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: false
+            message: "Page not found"
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: false
+            message: "The given data was invalid."
+            errors:
+              email: ["The email field is required."]
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization
+  - name: CMS Pages
+    description: Page management operations
+  - name: CMS Components
+    description: Component management operations
+  - name: Version Management
+    description: Page versioning operations
+  - name: Analytics
+    description: Analytics and visitor tracking
+  - name: Preview
+    description: Page preview operations
+
+paths:
+  # Authentication
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, password_confirmation]
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+                email:
+                  type: string
+                  format: email
+                  example: "john@example.com"
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  example: "password123"
+                password_confirmation:
+                  type: string
+                  format: password
+                  example: "password123"
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/User'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "john@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+                          token:
+                            type: string
+                            example: "7|FOJsW7WLeux7wlXgDHdhhldBjfKzusRcqMZUBjAc1f438e6c"
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /profile:
+    get:
+      tags:
+        - Authentication
+      summary: Get user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/User'
+
+  /profile/update:
+    put:
+      tags:
+        - Authentication
+      summary: Update user profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Updated"
+                email:
+                  type: string
+                  format: email
+                  example: "john.updated@example.com"
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/User'
+
+  /change-password:
+    put:
+      tags:
+        - Authentication
+      summary: Change password
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [current_password, password, password_confirmation]
+              properties:
+                current_password:
+                  type: string
+                  format: password
+                  example: "oldpassword123"
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  example: "newpassword123"
+                password_confirmation:
+                  type: string
+                  format: password
+                  example: "newpassword123"
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  # CMS Pages
+  /cms/pages:
+    get:
+      tags:
+        - CMS Pages
+      summary: Get user pages
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Pages retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Page'
+
+    post:
+      tags:
+        - CMS Pages
+      summary: Create new page
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, slug]
+              properties:
+                title:
+                  type: string
+                  example: "Toko Kue Manis"
+                slug:
+                  type: string
+                  example: "toko-kue-manis"
+                status:
+                  type: string
+                  enum: [draft, published]
+                  default: draft
+                  example: "draft"
+                business_profile:
+                  $ref: '#/components/schemas/BusinessProfile'
+                metadata:
+                  $ref: '#/components/schemas/Metadata'
+      responses:
+        '201':
+          description: Page created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Page'
+
+  /cms/pages/{pageId}:
+    get:
+      tags:
+        - CMS Pages
+      summary: Get page details
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Page retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Page'
+
+    put:
+      tags:
+        - CMS Pages
+      summary: Update page
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Updated Toko Kue Manis"
+                slug:
+                  type: string
+                  example: "updated-toko-kue-manis"
+                status:
+                  type: string
+                  enum: [draft, published]
+                  example: "published"
+                business_profile:
+                  $ref: '#/components/schemas/BusinessProfile'
+                metadata:
+                  $ref: '#/components/schemas/Metadata'
+      responses:
+        '200':
+          description: Page updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Page'
+
+    delete:
+      tags:
+        - CMS Pages
+      summary: Delete page
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Page deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  # CMS Components
+  /cms/components:
+    get:
+      tags:
+        - CMS Components
+      summary: Get available components
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Components retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Component'
+
+  /cms/pages/{pageId}/components:
+    post:
+      tags:
+        - CMS Components
+      summary: Add component to page
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [component_id, order_index]
+              properties:
+                component_id:
+                  type: string
+                  format: uuid
+                  example: "ce6799b7-101b-4cf9-a80a-47a3d8b5c3c0"
+                content:
+                  type: object
+                  example:
+                    title: "Hero Title"
+                    subtitle: "Hero Subtitle"
+                order_index:
+                  type: integer
+                  minimum: 0
+                  example: 0
+      responses:
+        '201':
+          description: Component added successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PageComponent'
+
+  /cms/pages/{pageId}/components/{componentId}:
+    put:
+      tags:
+        - CMS Components
+      summary: Update page component
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: componentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: object
+                  example:
+                    title: "Updated Hero Title"
+                    subtitle: "Updated Hero Subtitle"
+                order_index:
+                  type: integer
+                  minimum: 0
+                  example: 0
+                is_active:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Component updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PageComponent'
+
+    delete:
+      tags:
+        - CMS Components
+      summary: Remove page component
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: componentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Component removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  # Analytics
+  /analytics/dashboard:
+    get:
+      tags:
+        - Analytics
+      summary: Get analytics dashboard
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Analytics data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /analytics/track/{pageSlug}:
+    post:
+      tags:
+        - Analytics
+      summary: Track visitor
+      parameters:
+        - name: pageSlug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fingerprint:
+                  type: string
+                  example: "fp_12345"
+                referrer:
+                  type: string
+                  format: uri
+                  example: "https://google.com"
+                user_agent:
+                  type: string
+                  example: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                ip_address:
+                  type: string
+                  format: ipv4
+                  example: "192.168.1.1"
+                screen_resolution:
+                  type: string
+                  example: "1920x1080"
+      responses:
+        '200':
+          description: Visitor tracked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  # Preview
+  /preview/pages/{pageId}:
+    get:
+      tags:
+        - Preview
+      summary: Get page preview
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Preview data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /preview/pages/{pageId}/responsive:
+    get:
+      tags:
+        - Preview
+      summary: Get responsive preview
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: device
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [desktop, tablet, mobile]
+            default: desktop
+      responses:
+        '200':
+          description: Responsive preview HTML
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /preview/public/{pageSlug}:
+    get:
+      tags:
+        - Preview
+      summary: Get public preview
+      parameters:
+        - name: pageSlug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Public preview data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
